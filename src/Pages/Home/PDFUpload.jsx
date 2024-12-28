@@ -5,40 +5,17 @@ import { useState } from "react";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
 
-const PDFUpload = ({ setPdfFile }) => {
-  const [localPdfFile, setLocalPdfFile] = useState(null);
-
+const PDFUpload = ({ addPdfFile, localPdfFile }) => {
   const handleUploadPDF = (e) => {
     const file = e.target.files?.[0];
-
     if (file) {
-      setLocalPdfFile(file);
-      setPdfFile(file);
-    } else {
-      return (
-        <div role="alert" className="alert alert-error">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 shrink-0 stroke-current"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <span>Error! Upload your PDF again.</span>
-        </div>
-      );
+      addPdfFile(file); // Add file to the state in `Home`
     }
   };
 
   if (localPdfFile) {
     return (
-      <div className=" h-screen">
+      <div className="h-screen">
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
           <Viewer fileUrl={URL.createObjectURL(localPdfFile)} />
         </Worker>
@@ -73,3 +50,4 @@ const PDFUpload = ({ setPdfFile }) => {
 };
 
 export default PDFUpload;
+
